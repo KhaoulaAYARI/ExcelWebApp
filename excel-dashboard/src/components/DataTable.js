@@ -52,7 +52,6 @@ const DataTable = ({ refresh }) => {
           <th>sousThemeSante</th>
           <th>sousThemeBureautique</th>
           <th>idInterne</th>
-          <th>__v</th>
           <th>action</th>
         </tr>
       </thead>
@@ -92,7 +91,6 @@ const DataTable = ({ refresh }) => {
             <td>{row.sousThemeSante}</td>
             <td>{row.sousThemeBureautique}</td>
             <td>{row.idInterne}</td>
-            <td>{row.__v}</td>
             <td><button onClick={() => handleDelete(row._id)}>Supprimer</button></td>
           </tr>
         ))}
