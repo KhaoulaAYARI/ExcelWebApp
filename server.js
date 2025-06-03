@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost:27017/excelWebApp')
 .then(() => {
     console.log('MongoDB connecté');
     
-    // ⭐ Nouveau: Vidage de la collection au démarrage
+    // Vidage de la collection au démarrage
     mongoose.connection.db.collection('exceldatas').deleteMany({})
       .then(() => console.log('🗑️ Collection vidée avec succès'))
       .catch(err => console.log('Erreur lors du vidage:', err));
