@@ -1,6 +1,6 @@
 const mongoose=require("mongoose");
 const statisticsDataSchema= new mongoose.Schema({
-mois:"MM/YYYY",
+month:{ type: String, required: true, unique: true },
 general:{
     nbCRA:Number,
     nbAccompagnements:Number,
