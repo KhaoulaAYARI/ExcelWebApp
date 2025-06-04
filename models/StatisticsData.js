@@ -1,0 +1,72 @@
+const mongoose=require("mongoose");
+const statisticsDataSchema= new mongoose.Schema({
+mois:"MM/YYYY",
+general:{
+    nbCRA:Number,
+    nbAccompagnements:Number,
+    nbUsagersAccompagnes:Number,
+    nbAccompagnementsIndiv:Number,
+    nbAteliersCollectifs:Number,
+    totalParticipantsAuxAteliers:Number,
+    nbDemandesPonctuelles:Number
+},
+accompagnementsPoursuivis:{
+    nbPoursuiteAccompagnementIndiv:Number,
+    nbPoursuiteAtelierCollectif:Number,
+    nbRedirectionsAutreStructure:Number,
+},
+canauxAccompagnements:{
+    aDomicile:Number,
+    aDistance:Number,
+    lieuActivite:Number,
+    autres:Number,
+},
+tempsEnAccompagnements:{
+    totalHeures:Number,
+    individuels:Number,
+    collectifs:Number,
+    ponctuels:Number,
+},
+dureeDesAccompagnements:{
+    moins30min:Number,
+    entre30_60min:Number,
+    entre60_120min:Number,
+    plus120min:Number,
+},
+tranchesAgeDesUsagers:{
+    moins12ans:Number,
+    entre12_18ans:Number,
+    entre18_35ans:Number,
+    entre35_60ans:Number,
+    plus60ans:Number,
+},
+statutDesUsagers:{
+    scolarise:Number,
+    sansEmlpoi:Number,
+    enEmploi:Number,
+    retraite:Number,
+    nonRenseigne:Number,
+},
+themesDesAccompagnements:{
+    accompagnerUnAidant:Number,
+    budget:Number,
+    gestionDeContenusNumeriques:Number,
+    courriels:Number,
+    cultureNumerique:Number,
+    demarcheEnLigne:Number,
+    diagnosticNumerique:Number,
+    echangeAvecSesProches:Number,
+    prendreEnMainDuMateriel:Number,
+    fraudeEtHarcelement:Number,
+    naviguerSurInternet:Number,
+    sante:Number,
+    scolaire:Number,
+    securiserEquipement:Number,
+    smartphone:Number,
+    numeriqueTPE_PME:Number,
+    bureautique:Number,
+    emlpoiEtFormation:Number,
+    autre:Number
+}
+});
+module.exports=mongoose.model("StatisticsData", statisticsDataSchema);
