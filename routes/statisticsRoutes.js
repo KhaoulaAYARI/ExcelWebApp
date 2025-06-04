@@ -17,6 +17,6 @@ const upload=multer({
 });
 
 // Route POST pour uploader un fichier Excel
-router.post("/uploadStatistics", upload.single("excelFile"), uploadController.uploadExcel);
+router.post("/uploadStatistics", upload.single("file"), uploadController.uploadExcel);
 
 module.exports = router;
