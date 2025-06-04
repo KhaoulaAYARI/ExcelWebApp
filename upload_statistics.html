@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Upload 2e modèle</title>
+</head>
+<body>
+  <h1>Uploader un fichier Excel (2e modèle)</h1>
+  <input type="file" id="fileInput" />
+  <button onclick="upload()">Envoyer</button>
+
+  <script>
+    async function upload() {
+      const file = document.getElementById('fileInput').files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("http://localhost:5000/api/excel/uploadStatistics", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      alert(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>

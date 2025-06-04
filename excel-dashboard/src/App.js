@@ -1,38 +1,100 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+// Composant de navigation
+import Navbar from './components/Navbar';
+
+// Première collection
 import DataForm from './components/DataForm';
 import DataTable from './components/DataTable';
-import ExcelUpload from './components/ExcelUpload'; // Importez le nouveau composant
+import ExcelUpload from './components/ExcelUpload';
 
-function App() {
-  const [refresh, setRefresh] = useState(false);
+// Deuxième collection (statistiques)
+import StatisticsDataForm from './components/StatisticsDataForm';
+import StatisticsDataTable from './components/StatisticsDataTable';
+import StatisticsExcelUpload from './components/StatisticsExcelUpload';
 
-  const handleAdded = () => {
-    setRefresh(!refresh); // Cette fonction rafraîchit DataTable
-  };
-
-  // Ajoutez un état pour gérer le fichier uploadé si nécessaire
-  const [uploadedData, setUploadedData] = useState(null);
-
+function HomePage() {
   return (
     <div style={{ padding: '20px' }}>
-      <h1>Tableau de données Excel</h1>
-      
-      {/* Section Upload - Ajoutez le composant ici */}
-      <div style={{ marginBottom: '30px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
-        <h2>Importer un fichier Excel</h2>
-        <ExcelUpload 
-          onUploadSuccess={(data) => {
-            setUploadedData(data); // Si vous voulez traiter les données
-            handleAdded(); // Rafraîchit le tableau après upload
-          }} 
-        />
-      </div>
-
-      {/* Section existante */}
-      <DataForm onAdded={handleAdded} />
-      <DataTable refresh={refresh} uploadedData={uploadedData} />
+      <h1>🏠 Accueil</h1>
+      <p>Choisissez une collection :</p>
+      <ul>
+        <li><a href="/collection1">Première collection</a></li>
+        <li><a href="/collection2">Deuxième collection (Statistiques)</a></li>
+      </ul>
     </div>
   );
 }
 
+function FirstCollectionPage() {
+  const [refresh, setRefresh] = useState(false);
+  const [uploadedData, setUploadedData] = useState(null);
+
+  const handleRefresh = () => setRefresh(!refresh);
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>📊 Première Collection</h2>
+      <section style={{ marginBottom: '30px' }}>
+        <h3>Importer un fichier Excel</h3>
+        <ExcelUpload onUploadSuccess={(data) => {
+          setUploadedData(data);
+          handleRefresh();
+        }} />
+      </section>
+      <section style={{ marginBottom: '30px' }}>
+        <h3>Ajouter un enregistrement</h3>
+        <DataForm onAdded={handleRefresh} />
+      </section>
+      <section>
+        <h3>Tableau de données</h3>
+        <DataTable refresh={refresh} uploadedData={uploadedData} />
+      </section>
+    </div>
+  );
+}
+
+function SecondCollectionPage() {
+  const [refresh, setRefresh] = useState(false);
+  const [uploadedData, setUploadedData] = useState(null);
+
+  const handleRefresh = () => setRefresh(!refresh);
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h2>📈 Deuxième Collection (Statistiques)</h2>
+      <section style={{ marginBottom: '30px' }}>
+        <h3>Importer un fichier Excel</h3>
+        <StatisticsExcelUpload onUploadSuccess={(data) => {
+          setUploadedData(data);
+          handleRefresh();
+        }} />
+      </section>
+      <section style={{ marginBottom: '30px' }}>
+        <h3>Ajouter un enregistrement</h3>
+        <StatisticsDataForm onAdded={handleRefresh} />
+      </section>
+      <section>
+        <h3>Tableau de données</h3>
+        <StatisticsDataTable refresh={refresh} uploadedData={uploadedData} />
+      </section>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Navbar /> {/* La barre de navigation visible sur toutes les pages */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/collection1" element={<FirstCollectionPage />} />
+        <Route path="/collection2" element={<SecondCollectionPage />} />
+      </Routes>
+    </Router>
+  );
+}
+
 export default App;
+

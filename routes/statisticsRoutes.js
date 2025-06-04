@@ -4,11 +4,11 @@ const multer=require("multer");
 const uploadStatisticsController=require("../controllers/uploadStatisticsController");
 
 // Configuration Multer
-const upload=multer({
-    dest: "uploads/",
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB max
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheet')) {
+    if (file.mimetype.includes('excel') || file.mimetype.includes('spreadsheetml')) {
       cb(null, true);
     } else {
       cb(new Error('Seuls les fichiers Excel sont autorisés'), false);
@@ -16,7 +16,8 @@ const upload=multer({
   }
 });
 
+
 // Route POST pour uploader un fichier Excel
-router.post("/uploadStatistics", upload.single("file"), uploadController.uploadExcel);
+router.post("/uploadStatistics", upload.single("file"),  uploadStatisticsController.uploadStatisticsData);
 
 module.exports = router;

@@ -16,7 +16,7 @@ exports.uploadStatisticsData = async (req, res) => {
     const excelData = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
    // 4. Trouver les colonnes de mois (ex: "10/2024")
    const months=[];
-    const headerRow = excelData[2]; // La 3ème ligne contient les mois
+    const headerRow = excelData[1]; // La 2ème ligne contient les mois
     for (let cell of headerRow){
       if(typeof cell==='string' && cell.includes('/')){
         months.push(cell);
@@ -31,9 +31,9 @@ exports.uploadStatisticsData = async (req, res) => {
        const monthlyData = {
         month: month,
         general: {
-          nbCRA: getValue(excelData, "Nombre de CRAs", monthIndex),
-          nbAccompagnements: getValue(excelData, "Nombre d'accompagnements", monthIndex),
-          nbUsagersAccompagnes: getValue(excelData, "nb Usagers Accompagnes", monthIndex),
+          nbCRA: getValue(excelData, "nbCRA", monthIndex),
+          nbAccompagnements: getValue(excelData, "nbAccompagnements", monthIndex),
+          nbUsagersAccompagnes: getValue(excelData, "nbUsagersAccompagnes", monthIndex),
           nbAccompagnementsIndiv: getValue(excelData, "nbAccompagnementsIndiv", monthIndex),
           nbAteliersCollectifs: getValue(excelData, "nbAteliersCollectifs", monthIndex),
           totalParticipantsAuxAteliers: getValue(excelData, "totalParticipantsAuxAteliers", monthIndex),
@@ -45,13 +45,13 @@ exports.uploadStatisticsData = async (req, res) => {
           nbRedirectionsAutreStructure: getValue(excelData, "nbRedirectionsAutreStructure", monthIndex),
         },
         canauxAccompagnements:{
-          aDomicile: getValue(excelData, "à Domicile", monthIndex),
-          aDistance: getValue(excelData, "à Distance", monthIndex),
-          lieuActivite: getValue(excelData, "lieu d'Activité", monthIndex),
-          autres: getValue(excelData, "Autres", monthIndex),
+          aDomicile: getValue(excelData, "aDomicile", monthIndex),
+          aDistance: getValue(excelData, "aDistance", monthIndex),
+          lieuActivite: getValue(excelData, "lieuActivite", monthIndex),
+          autres: getValue(excelData, "autres", monthIndex),
         },
         tempsEnAccompagnements:{
-          totalHeures: getValue(excelData, "Total heuress", monthIndex),
+          totalHeures: getValue(excelData, "totalHeures", monthIndex),
           individuels: getValue(excelData, "individuels", monthIndex),
           collectifs: getValue(excelData, "collectifs", monthIndex),
           ponctuels: getValue(excelData, "ponctuels", monthIndex),
@@ -70,15 +70,16 @@ exports.uploadStatisticsData = async (req, res) => {
           plus60ans: getValue(excelData, "plus60ans", monthIndex),
         },
         statutDesUsagers:{
-          scolarise: getValue(excelData, "Scolarisé", monthIndex),
+          scolarise: getValue(excelData, "scolarise", monthIndex),
           sansEmlpoi: getValue(excelData, "sansEmlpoi", monthIndex),
           enEmploi: getValue(excelData, "enEmploi", monthIndex),
-          retraite: getValue(excelData, "retraité", monthIndex),
-          nonRenseigne: getValue(excelData, "non Renseigné", monthIndex),
+          retraite: getValue(excelData, "retraite", monthIndex),
+          nonRenseigne: getValue(excelData, "nonRenseigne", monthIndex),
         },
         themesDesAccompagnements:{
           accompagnerUnAidant: getValue(excelData, "accompagnerUnAidant", monthIndex),
-          budget: getValue(excelData, "budget", monthIndex),gestionDeContenusNumeriques: getValue(excelData, "gestionDeContenusNumeriques", monthIndex),
+          budget: getValue(excelData, "budget", monthIndex),
+          gestionDeContenusNumeriques: getValue(excelData, "gestionDeContenusNumeriques", monthIndex),
           courriels: getValue(excelData, "courriels", monthIndex),
           cultureNumerique: getValue(excelData, "cultureNumerique", monthIndex),
           demarcheEnLigne: getValue(excelData, "demarcheEnLigne", monthIndex),
@@ -103,10 +104,10 @@ exports.uploadStatisticsData = async (req, res) => {
 
     // 6. Sauvegarder dans MongoDB 
      for (let stat of statsToSave) {
-      await MonthlyStat.findOneAndUpdate(
-        { month: stat.month }, // Critère de recherche
-        stat,                 // Données à mettre à jour
-        { upsert: true }      // Créer si n'existe pas
+      await StatisticsData.findOneAndUpdate(
+        { month: stat.month },
+        stat,
+        { upsert: true }
       );
     }
     // 7. Réponse de succès
