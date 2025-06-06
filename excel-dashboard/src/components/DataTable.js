@@ -142,7 +142,7 @@ const DataTable = ({ refresh }) => {
                   </th>
                 ))}
               </tr>
-              <tr>
+              <tr key={`filter-${headerGroup.id}`}>
                 {headerGroup.headers.map(column => (
                   <th key={column.id}>
                     {column.canFilter ? column.render('Filter') : null}

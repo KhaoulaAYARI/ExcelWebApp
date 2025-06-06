@@ -1,33 +1,42 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const uploadRoute = require('./routes/uploadRoute');
-const excelRoutes = require('./routes/excelDataRoutes');
-const statisticsRoutes = require('./routes/statisticsRoutes');
+
+const uploadRoute = require('./routes/uploadRoute');// Collection 1 upload
+const excelRoutes = require('./routes/excelDataRoutes'); // Collection 1 CRUD
+const statisticsRoutes = require('./routes/statisticsRoutes'); // Collection 2 (statistiques) UPLOAD
+const statisticsExcelRoutes=require('./routes/statisticsExcelRoutes');
 
 const app = express();
 
-app.use(cors());              
-app.use(express.json());
+//app.use(cors());
+app.use(cors({
+  origin: /^http:\/\/localhost:\d{4}$/, // Autorise localhost sur n'importe quel port
+  allowedHeaders: ['Content-Type'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 
+// Connexion à MongoDB
 mongoose.connect('mongodb://localhost:27017/excelWebApp')
-.then(() => {
-  console.log('MongoDB connecté');
-  
-  // Vidage de la collection au démarrage
-  //mongoose.connection.db.collection('exceldatas').deleteMany({})
-  //.then(() => console.log('🗑️ Collection vidée avec succès'))
- // .catch(err => console.log('Erreur lors du vidage:', err));
-})
-.catch(err => console.log(err));
+  .then(() => {
+    console.log('✅ MongoDB connecté');
+    // Décommenter si besoin de vider la collection :
+    mongoose.connection.db.collection('exceldatas').deleteMany({}),
+    mongoose.connection.db.collection('statisticsdatas').deleteMany({})
+     .then(() => console.log('🗑️ Collection vidée'))
+    .catch(err => console.log('Erreur de vidage :', err));
+  })
+  .catch(err => console.log('❌ Erreur MongoDB :', err));
 
-app.use('/upload', uploadRoute);
-app.use('/api/excel', excelRoutes);
-console.log("✅ Route '/api/excel' activée");
-app.use('/api/excel', statisticsRoutes);
+// Routes
+app.use('/upload', uploadRoute); // Pour l'import Excel
+app.use('/api/excel', excelRoutes); // Collection Excel classique
+app.use('/api/excel', statisticsRoutes); // Pour l'import Excel COLLECTION2
+app.use('/api/statistics', statisticsExcelRoutes);//COLLECTION2
 
 
 app.listen(5000, () => {
-  console.log('Serveur en ligne sur le port 5000');
+  console.log('🚀 Serveur en ligne sur le port 5000');
 });
+
 
