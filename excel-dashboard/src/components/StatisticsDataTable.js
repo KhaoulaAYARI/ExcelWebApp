@@ -2,20 +2,66 @@ import React, { useEffect, useState } from 'react';
 
 function StatisticsDataTable({ refresh }) {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [columnFilters, setColumnFilters] = useState({});
 
   useEffect(() => {
     fetch('http://localhost:5000/api/statistics')
       .then(res => res.json())
       .then(json => {
-        console.log("Réponse API:", json);
-        // Accepte à la fois {success, data} ET le tableau direct
-        setData(Array.isArray(json) ? json : (json.success ? json.data : []));
+        const newData = Array.isArray(json) ? json : (json.success ? json.data : []);
+        setData(newData);
       })
       .catch(err => {
         console.error(err);
         alert("Erreur serveur");
       });
   }, [refresh]);
+
+  useEffect(() => {
+    let tempData = [...data];
+
+    // Filtre global
+    if (globalFilter) {
+      const lower = globalFilter.toLowerCase();
+      tempData = tempData.filter(item =>
+        Object.values(item).some(val =>
+          typeof val === 'string' && val.toLowerCase().includes(lower)
+        )
+      );
+    }
+
+    // Filtres par colonne
+    Object.entries(columnFilters).forEach(([key, value]) => {
+  if (value) {
+    tempData = tempData.filter(item => {
+      const keys = key.split('.');
+      let val = item;
+      for (let k of keys) val = val?.[k];
+
+      const valStr = val ? val.toString().toLowerCase() : '';
+      const filterStr = value.toLowerCase();
+
+      if (key === 'month') {
+        // Match sur mois, année, ou full
+        return (
+          valStr.includes(filterStr) ||              // ex: "08/2023" includes "2023"
+          valStr.startsWith(filterStr + '/') ||      // ex: "08" => "08/"
+          valStr.endsWith('/' + filterStr)           // ex: "2023" => "/2023"
+        );
+      }
+
+      return valStr.includes(filterStr);
+    });
+  }
+});
+
+
+
+    setFilteredData(tempData);
+  }, [data, globalFilter, columnFilters]);
+
     const handleDelete = async (id) => {
     if (!window.confirm("Supprimer cette ligne ?")) return;
 
@@ -41,19 +87,99 @@ function StatisticsDataTable({ refresh }) {
     // Redirige vers une page d’édition ou ouvre un modal
     window.location.href = `/modifier-donnees/${id}`;
   };
+  const resetFilters = () => {
+  setGlobalFilter('');
+  setColumnFilters({});
+  };
+
   return (
     <div>
       <h2>Données Statistiques Importées</h2>
+              <div style={{ marginBottom: '10px' }}>
+          <input
+            type="text"
+            placeholder="Filtre global..."
+            value={globalFilter}
+            onChange={e => setGlobalFilter(e.target.value)}
+          />
+          <button onClick={resetFilters}>Réinitialiser les filtres</button>
+          <p>{filteredData.length} lignes affichées sur {data.length}</p>
+        </div>
+
       <table border="1" cellPadding="5">
         <thead>
           <tr>
-            <th>Mois</th>
-            <th>nbCRA</th>
-            <th>nbAccompagnements</th>
-            <th>nbUsagersAccompagnes</th>
-            <th>nbAccompagnementsIndiv</th>
-            <th>nbAteliersCollectifs</th>
-            <th>nbDemandesPonctuelles</th>
+            <th>Mois
+            <br/>
+            <input
+            type="text"
+            value={columnFilters['month'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, month: e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbCRA<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbCRA'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbCRA': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbAccompagnements<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbAccompagnements'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbAccompagnements': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbUsagersAccompagnes<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbUsagersAccompagnes'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbUsagersAccompagnes': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbAccompagnementsIndiv<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbAccompagnementsIndiv'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbAccompagnementsIndiv': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbAteliersCollectifs<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbAteliersCollectifs'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbAteliersCollectifs': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
+            <th>nbDemandesPonctuelles<br/>
+            <input
+            type="text"
+            value={columnFilters['general.nbDemandesPonctuelles'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.nbDemandesPonctuelles': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
             <th>nbPoursuiteAccompagnementIndiv</th>
             <th>nbPoursuiteAtelierCollectif</th>
             <th>nbRedirectionsAutreStructure</th>
@@ -102,7 +228,7 @@ function StatisticsDataTable({ refresh }) {
           </tr>
         </thead>
         <tbody>
-        {data.map((item, idx) => {
+        {filteredData.map((item, idx) => {
         const themes = item.themesDesAccompagnements;
         const maxTheme = themes
           ? Object.keys(themes).reduce((a, b) => (themes[a] > themes[b] ? a : b))
