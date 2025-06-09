@@ -16,7 +16,31 @@ function StatisticsDataTable({ refresh }) {
         alert("Erreur serveur");
       });
   }, [refresh]);
+    const handleDelete = async (id) => {
+    if (!window.confirm("Supprimer cette ligne ?")) return;
 
+    try {
+      const res = await fetch(`http://localhost:5000/api/statistics/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        alert("Supprimé !");
+        setData(data.filter(item => item._id !== id)); // Mise à jour locale
+      } else {
+        const errorData = await res.json();
+        alert("Erreur : " + errorData.error);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Erreur de suppression");
+    }
+  };
+
+  const handleEdit = (id) => {
+    // Redirige vers une page d’édition ou ouvre un modal
+    window.location.href = `/modifier-donnees/${id}`;
+  };
   return (
     <div>
       <h2>Données Statistiques Importées</h2>
@@ -74,10 +98,11 @@ function StatisticsDataTable({ refresh }) {
             <th>bureautique</th>
             <th>emlpoiEtFormation</th>
             <th>autre</th>
+            <th>Actions</th> 
           </tr>
         </thead>
-            <tbody>
-      {data.map((item, idx) => {
+        <tbody>
+        {data.map((item, idx) => {
         const themes = item.themesDesAccompagnements;
         const maxTheme = themes
           ? Object.keys(themes).reduce((a, b) => (themes[a] > themes[b] ? a : b))
@@ -136,7 +161,10 @@ function StatisticsDataTable({ refresh }) {
             <td>{item.themesDesAccompagnements?.bureautique ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.emlpoiEtFormation ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.autre ?? '-'}</td>
-            
+            <td>
+                  <button onClick={() => handleEdit(item._id)}>Modifier</button>
+                  <button onClick={() => handleDelete(item._id)}>Supprimer</button>
+                </td>
           </tr>
         );
       })}
