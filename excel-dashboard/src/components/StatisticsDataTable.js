@@ -180,50 +180,402 @@ function StatisticsDataTable({ refresh }) {
             placeholder="Filtrer"
             />
             </th>
-            <th>nbPoursuiteAccompagnementIndiv</th>
-            <th>nbPoursuiteAtelierCollectif</th>
-            <th>nbRedirectionsAutreStructure</th>
-            <th>aDomicile</th>
-            <th>aDistance</th>
-            <th>lieuActivite</th>
-            <th>autres</th>
-            <th>totalHeures</th>
-            <th>individuels</th>
-            <th>collectifs</th>
-            <th>ponctuels</th>
-            <th>moins30min</th>
-            <th>entre30_60min</th>
-            <th>entre60_120min</th>
-            <th>plus120min</th>
-            <th>moins12ans</th>
-            <th>entre12_18ans</th>
-            <th>entre18_35ans</th>
-            <th>entre35_60ans</th>
-            <th>plus60ans</th>
-            <th>scolarise</th>
-            <th>sansEmlpoi</th>
-            <th>enEmploi</th>
-            <th>retraite</th>
-            <th>nonRenseigne</th>
-            <th>accompagnerUnAidant</th>
-            <th>budget</th>
-            <th>gestionDeContenusNumeriques</th>
-            <th>courriels</th>
-            <th>cultureNumerique</th>
-            <th>demarcheEnLigne</th>
-            <th>diagnosticNumerique</th>
-            <th>echangeAvecSesProches</th>
-            <th>prendreEnMainDuMateriel</th>
-            <th>fraudeEtHarcelement</th>
-            <th>naviguerSurInternet</th>
-            <th>sante</th>
-            <th>scolaire</th>
-            <th>securiserEquipement</th>
-            <th>smartphone</th>
-            <th>numeriqueTPE_PME</th>
-            <th>bureautique</th>
-            <th>emlpoiEtFormation</th>
-            <th>autre</th>
+            <th>nbPoursuiteAccompagnementIndiv<br/>
+            <input
+            type="text"
+            value={columnFilters['accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>nbPoursuiteAtelierCollectif<br/>
+            <input
+            type="text"
+            value={columnFilters['accompagnementsPoursuivis.nbPoursuiteAtelierCollectif'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbPoursuiteAtelierCollectif': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>nbRedirectionsAutreStructure<br/>
+            <input
+            type="text"
+            value={columnFilters['accompagnementsPoursuivis.nbRedirectionsAutreStructure'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbRedirectionsAutreStructure': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />e</th>
+            <th>aDomicile<br/>
+            <input
+            type="text"
+            value={columnFilters['canauxAccompagnements.aDomicile'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'canauxAccompagnements.aDomicile': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>aDistance<br/>
+            <input
+            type="text"
+            value={columnFilters['canauxAccompagnements.aDistance'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'canauxAccompagnements.aDistance': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>lieuActivite<br/>
+            <input
+            type="text"
+            value={columnFilters['canauxAccompagnements.lieuActivite'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'canauxAccompagnements.lieuActivite': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>autres<br/>
+            <input
+            type="text"
+            value={columnFilters['canauxAccompagnements.autres'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'canauxAccompagnements.autres': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>totalHeures<br/>
+            <input
+            type="text"
+            value={columnFilters['tempsEnAccompagnements.totalHeures'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tempsEnAccompagnements.totalHeures': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>individuels<br/>
+            <input
+            type="text"
+            value={columnFilters['tempsEnAccompagnements.individuels'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tempsEnAccompagnements.individuels': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>collectifs<br/>
+            <input
+            type="text"
+            value={columnFilters['tempsEnAccompagnements.collectifs'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tempsEnAccompagnements.collectifs': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>ponctuels<br/>
+            <input
+            type="text"
+            value={columnFilters['tempsEnAccompagnements.ponctuels'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tempsEnAccompagnements.ponctuels': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>moins30min<br/>
+            <input
+            type="text"
+            value={columnFilters['dureeDesAccompagnements.moins30min'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'dureeDesAccompagnements.moins30min': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>entre30_60min<br/>
+            <input
+            type="text"
+            value={columnFilters['dureeDesAccompagnements.entre30_60min'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'dureeDesAccompagnements.entre30_60min': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>entre60_120min<br/>
+            <input
+            type="text"
+            value={columnFilters['dureeDesAccompagnements.entre60_120min'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'dureeDesAccompagnements.entre60_120min': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>plus120min<br/>
+            <input
+            type="text"
+            value={columnFilters['dureeDesAccompagnements.plus120min'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'dureeDesAccompagnements.plus120min': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>moins12ans<br/>
+            <input
+            type="text"
+            value={columnFilters['tranchesAgeDesUsagers.moins12ans'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tranchesAgeDesUsagers.moins12ans': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>entre12_18ans<br/>
+            <input
+            type="text"
+            value={columnFilters['tranchesAgeDesUsagers.entre12_18ans'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tranchesAgeDesUsagers.entre12_18ans': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>entre18_35ans<br/>
+            <input
+            type="text"
+            value={columnFilters['tranchesAgeDesUsagers.entre18_35ans'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tranchesAgeDesUsagers.entre18_35ans': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>entre35_60ans<br/>
+            <input
+            type="text"
+            value={columnFilters['tranchesAgeDesUsagers.entre35_60ans'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tranchesAgeDesUsagers.entre35_60ans': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>plus60ans<br/>
+            <input
+            type="text"
+            value={columnFilters['tranchesAgeDesUsagers.plus60ans'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'tranchesAgeDesUsagers.plus60ans': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>scolarise<br/>
+            <input
+            type="text"
+            value={columnFilters['statutDesUsagers.scolarise'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'statutDesUsagers.scolarise': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>sansEmlpoi<br/>
+            <input
+            type="text"
+            value={columnFilters['statutDesUsagers.sansEmlpoi'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'statutDesUsagers.sansEmlpoi': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>enEmploi<br/>
+            <input
+            type="text"
+            value={columnFilters['statutDesUsagers.enEmploi'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'statutDesUsagers.enEmploi': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>retraite<br/>
+            <input
+            type="text"
+            value={columnFilters['statutDesUsagers.retraite'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'statutDesUsagers.retraite': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>nonRenseigne<br/>
+            <input
+            type="text"
+            value={columnFilters['statutDesUsagers.nonRenseigne'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'statutDesUsagers.nonRenseigne': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>accompagnerUnAidant<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.accompagnerUnAidant'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.accompagnerUnAidant': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>budget<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.budget'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.budget': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>gestionDeContenusNumeriques<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.gestionDeContenusNumeriques'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.gestionDeContenusNumeriques': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>courriels<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.courriels'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.courriels': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>cultureNumerique<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.cultureNumerique'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.cultureNumerique': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>demarcheEnLigne<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.demarcheEnLigne'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.demarcheEnLigne': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>diagnosticNumerique<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.diagnosticNumerique'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.diagnosticNumerique': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>echangeAvecSesProches<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.echangeAvecSesProches'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.echangeAvecSesProches': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>prendreEnMainDuMateriel<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.prendreEnMainDuMateriel'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.prendreEnMainDuMateriel': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>fraudeEtHarcelement<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.fraudeEtHarcelement'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.fraudeEtHarcelement': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>naviguerSurInternet<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.naviguerSurInternet'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.naviguerSurInternet': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>sante<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.sante'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.sante': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>scolaire<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.scolaire'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.scolaire': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>securiserEquipement<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.securiserEquipement'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.securiserEquipement': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>smartphone<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.smartphone'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.smartphone': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>numeriqueTPE_PME<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.numeriqueTPE_PME'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.numeriqueTPE_PME': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>bureautique<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.bureautique'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.bureautique': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>emlpoiEtFormation<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.emlpoiEtFormation'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.emlpoiEtFormation': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
+            <th>autre<br/>
+            <input
+            type="text"
+            value={columnFilters['themesDesAccompagnements.autre'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'themesDesAccompagnements.autre': e.target.value }))
+             }
+            placeholder="Filtrer"
+            /></th>
             <th>Actions</th> 
           </tr>
         </thead>
