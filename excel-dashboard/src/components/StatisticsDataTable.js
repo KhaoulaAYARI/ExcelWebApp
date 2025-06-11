@@ -89,7 +89,7 @@ function StatisticsDataTable({ refresh }) {
 
   const handleEdit = (id) => {
     // Redirige vers une page d’édition ou ouvre un modal
-    window.location.href = `/modifier-donnees/${id}`;
+    window.location.href = `/modifier-collection2/${id}`;
   };
   const resetFilters = () => {
   setGlobalFilter('');

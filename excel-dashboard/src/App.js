@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import EditStatisticsDataForm from './components/EditStatisticsDataForm'; 
+
 
 // Composant de navigation
 import Navbar from './components/Navbar';
@@ -91,6 +93,8 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/collection1" element={<FirstCollectionPage />} />
         <Route path="/collection2" element={<SecondCollectionPage />} />
+        <Route path="/modifier-collection2/:id" element={<EditStatisticsDataForm />} />
+
       </Routes>
     </Router>
   );
