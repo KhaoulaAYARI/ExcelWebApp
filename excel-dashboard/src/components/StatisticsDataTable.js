@@ -12,6 +12,7 @@ function StatisticsDataTable({ refresh }) {
       .then(json => {
         const newData = Array.isArray(json) ? json : (json.success ? json.data : []);
         setData(newData);
+        console.log("🧪 Exemple d'une ligne de données :", newData[0]);
       })
       .catch(err => {
         console.error(err);
@@ -40,8 +41,11 @@ function StatisticsDataTable({ refresh }) {
       let val = item;
       for (let k of keys) val = val?.[k];
 
-      const valStr = val ? val.toString().toLowerCase() : '';
+      const valStr = (val !== undefined && val !== null) ? val.toString().toLowerCase() : '';
+
       const filterStr = value.toLowerCase();
+      ///Test filter
+      console.log(`🔎 Clé: ${key} | Valeur dans data:`, val, '| Filtre:', value);
 
       if (key === 'month') {
         // Match sur mois, année, ou full
@@ -52,7 +56,7 @@ function StatisticsDataTable({ refresh }) {
         );
       }
 
-      return valStr.includes(filterStr);
+      return valStr === filterStr;
     });
   }
 });
@@ -170,6 +174,16 @@ function StatisticsDataTable({ refresh }) {
             placeholder="Filtrer"
             />
             </th>
+            <th>totalParticipantsAuxAteliers<br/>
+            <input
+            type="text"
+            value={columnFilters['general.totalParticipantsAuxAteliers'] || ''}
+            onChange={e =>
+            setColumnFilters(prev => ({ ...prev, 'general.totalParticipantsAuxAteliers': e.target.value }))
+             }
+            placeholder="Filtrer"
+            />
+            </th>
             <th>nbDemandesPonctuelles<br/>
             <input
             type="text"
@@ -180,33 +194,9 @@ function StatisticsDataTable({ refresh }) {
             placeholder="Filtrer"
             />
             </th>
-            <th>nbPoursuiteAccompagnementIndiv<br/>
-            <input
-            type="text"
-            value={columnFilters['accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv': e.target.value }))
-             }
-            placeholder="Filtrer"
-            /></th>
-            <th>nbPoursuiteAtelierCollectif<br/>
-            <input
-            type="text"
-            value={columnFilters['accompagnementsPoursuivis.nbPoursuiteAtelierCollectif'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbPoursuiteAtelierCollectif': e.target.value }))
-             }
-            placeholder="Filtrer"
-            /></th>
-            <th>nbRedirectionsAutreStructure<br/>
-            <input
-            type="text"
-            value={columnFilters['accompagnementsPoursuivis.nbRedirectionsAutreStructure'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, 'accompagnementsPoursuivis.nbRedirectionsAutreStructure': e.target.value }))
-             }
-            placeholder="Filtrer"
-            />e</th>
+            <th>nbPoursuiteAccompagnementIndiv</th>
+            <th>nbPoursuiteAtelierCollectif</th>
+            <th>nbRedirectionsAutreStructure</th>
             <th>aDomicile<br/>
             <input
             type="text"
@@ -581,10 +571,7 @@ function StatisticsDataTable({ refresh }) {
         </thead>
         <tbody>
         {filteredData.map((item, idx) => {
-        const themes = item.themesDesAccompagnements;
-        const maxTheme = themes
-          ? Object.keys(themes).reduce((a, b) => (themes[a] > themes[b] ? a : b))
-          : '—';
+        
 
         return (
           <tr key={item._id || idx}>
@@ -596,6 +583,7 @@ function StatisticsDataTable({ refresh }) {
             <td>{item.general?.nbAteliersCollectifs ?? '-'}</td>
             <td>{item.general?.totalParticipantsAuxAteliers ?? '-'}</td>
             <td>{item.general?.nbDemandesPonctuelles ?? '-'}</td>
+
             <td>{item.accompagnementsPoursuivis?.nbPoursuiteAccompagnementIndiv ?? '-'}</td>
             <td>{item.accompagnementsPoursuivis?.nbPoursuiteAtelierCollectif ?? '-'}</td>
             <td>{item.accompagnementsPoursuivis?.nbRedirectionsAutreStructure ?? '-'}</td>
@@ -603,29 +591,35 @@ function StatisticsDataTable({ refresh }) {
             <td>{item.canauxAccompagnements?.aDistance ?? '-'}</td>
             <td>{item.canauxAccompagnements?.lieuActivite ?? '-'}</td>
             <td>{item.canauxAccompagnements?.autres ?? '-'}</td>
+
             <td>{item.tempsEnAccompagnements?.totalHeures ?? '-'}</td>
             <td>{item.tempsEnAccompagnements?.individuels ?? '-'}</td>
             <td>{item.tempsEnAccompagnements?.collectifs ?? '-'}</td>
             <td>{item.tempsEnAccompagnements?.ponctuels ?? '-'}</td>
+
             <td>{item.dureeDesAccompagnements?.moins30min ?? '-'}</td>
             <td>{item.dureeDesAccompagnements?.entre30_60min ?? '-'}</td>
             <td>{item.dureeDesAccompagnements?.entre60_120min ?? '-'}</td>
             <td>{item.dureeDesAccompagnements?.plus120min ?? '-'}</td>
+
             <td>{item.tranchesAgeDesUsagers?.moins12ans ?? '-'}</td>
             <td>{item.tranchesAgeDesUsagers?.entre12_18ans ?? '-'}</td>
             <td>{item.tranchesAgeDesUsagers?.entre18_35ans ?? '-'}</td>
             <td>{item.tranchesAgeDesUsagers?.entre35_60ans ?? '-'}</td>
             <td>{item.tranchesAgeDesUsagers?.plus60ans ?? '-'}</td>
+
             <td>{item.statutDesUsagers?.scolarise ?? '-'}</td>
             <td>{item.statutDesUsagers?.sansEmlpoi ?? '-'}</td>
             <td>{item.statutDesUsagers?.enEmploi ?? '-'}</td>
             <td>{item.statutDesUsagers?.retraite ?? '-'}</td>
             <td>{item.statutDesUsagers?.nonRenseigne ?? '-'}</td>
+
             <td>{item.themesDesAccompagnements?.accompagnerUnAidant ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.budget ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.gestionDeContenusNumeriques ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.courriels ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.cultureNumerique ?? '-'}</td>
+            <td>{item.themesDesAccompagnements?.demarcheEnLigne ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.diagnosticNumerique ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.echangeAvecSesProches ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.prendreEnMainDuMateriel ?? '-'}</td>
