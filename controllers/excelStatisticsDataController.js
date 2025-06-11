@@ -3,6 +3,7 @@ const StatisticsData = require('../models/StatisticsData');
 // Créer une nouvelle donnée
 exports.createData = async (req, res) => {
   try {
+    console.log("📥 Reçu :", req.body);
     const newData = new StatisticsData(req.body);
     await newData.save();
     res.status(201).json(newData);

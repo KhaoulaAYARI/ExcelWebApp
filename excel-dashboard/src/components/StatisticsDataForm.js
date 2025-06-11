@@ -86,22 +86,40 @@ function StatisticsDataForm({ onAdded }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const res = await fetch('http://localhost:5000/api/excel/statistics', {
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    console.log("📤 Données envoyées :", formData);
+
+    const res = await fetch('http://localhost:5000/api/statistics', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     });
 
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("❌ Erreur brute serveur :", errorText);
+      alert('Erreur serveur : ' + res.status + ' - ' + res.statusText);
+      return;
+    }
+
     const result = await res.json();
+
     if (result.success) {
-      alert('Enregistrement ajouté');
+      alert('✅ Enregistrement ajouté');
       onAdded();
     } else {
-      alert('Erreur : ' + result.message);
+      alert('❌ Erreur de traitement : ' + (result.message || 'réponse inattendue'));
     }
-  };
+
+  } catch (error) {
+    console.error("🔥 Exception lors de l'envoi :", error);
+    alert('Erreur critique : ' + error.message);
+  }
+};
+
 
   return (
     <form onSubmit={handleSubmit}>

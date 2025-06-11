@@ -11,7 +11,8 @@ const app = express();
 
 //app.use(cors());
 app.use(cors({
-  origin: /^http:\/\/localhost:\d{4}$/, // Autorise localhost sur n'importe quel port
+    origin:'*', //a modifier plustard dans la production
+ // origin: /^http:\/\/localhost:\d{4}$/, // Autorise localhost sur n'importe quel port
   allowedHeaders: ['Content-Type'],
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
@@ -27,6 +28,8 @@ mongoose.connect('mongodb://localhost:27017/excelWebApp')
     .catch(err => console.log('Erreur de vidage :', err));
   })
   .catch(err => console.log('❌ Erreur MongoDB :', err));
+
+app.use(express.json());
 
 // Routes
 app.use('/upload', uploadRoute); // Pour l'import Excel
