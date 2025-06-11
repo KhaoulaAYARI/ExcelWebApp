@@ -6,7 +6,7 @@ exports.createData = async (req, res) => {
     console.log("📥 Reçu :", req.body);
     const newData = new StatisticsData(req.body);
     await newData.save();
-    res.status(201).json(newData);
+    res.status(201).json({ success: true, message: 'Donnée enregistrée avec succès' });
   } catch (err) {
     if (err.code === 11000) {
       return res.status(400).json({ error: "Un enregistrement pour ce mois existe déjà." });
