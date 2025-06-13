@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 import {
   useTable,
   usePagination,
@@ -38,6 +39,22 @@ const DataTable = ({ refresh }) => {
 
   const handleEdit = (id) => {
     navigate(`/modifier-collection1/${id}`);
+  };
+  const handleExportExcel = () => {
+    // 1. Créer un nouveau workbook
+    const wb = XLSX.utils.book_new();
+    
+    // 2. Convertir les données filtrées (ou toutes) en worksheet
+    const ws = XLSX.utils.json_to_sheet(
+      rows.map(row => row.original) // Exporte les données VISIBLES (filtrées)
+      // Pour tout exporter : utiliser `data` au lieu de `rows.map(...)`
+    );
+    
+    // 3. Ajouter le worksheet au workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Export");
+    
+    // 4. Générer le fichier
+    XLSX.writeFile(wb, `export_${new Date().toISOString().split('T')[0]}.xlsx`);
   };
 
   // 🧱 Définir les colonnes
@@ -141,6 +158,11 @@ const DataTable = ({ refresh }) => {
           style={{ padding: '5px', width: '300px', marginRight: '10px' }}
         />
         <button onClick={handleResetFilters}>Réinitialiser les filtres</button>
+        <button onClick={handleExportExcel}
+        style={{ marginLeft: '10px', background: '#4CAF50', color: 'white' }}
+            >
+          Exporter en Excel
+        </button>
       </div>
 
       {/* Message ligne filtrée */}
