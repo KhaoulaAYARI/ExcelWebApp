@@ -88,7 +88,7 @@ function StatisticsDataTable({ refresh }) {
   };
 
   const handleEdit = (id) => {
-    // Redirige vers une page d’édition ou ouvre un modal
+    // Redirige vers une page de modification
     window.location.href = `/modifier-collection2/${id}`;
   };
   const resetFilters = () => {

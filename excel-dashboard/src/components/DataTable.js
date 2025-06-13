@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   useTable,
   usePagination,
@@ -20,6 +21,7 @@ const ColumnFilter = ({ column }) => {
   );
 };
 
+
 const DataTable = ({ refresh }) => {
   const [data, setData] = useState([]);
 
@@ -31,6 +33,11 @@ const DataTable = ({ refresh }) => {
     await deleteData(id);
     const updated = data.filter((item) => item._id !== id);
     setData(updated);
+  };
+  const navigate = useNavigate();
+
+  const handleEdit = (id) => {
+    navigate(`/modifier-collection1/${id}`);
   };
 
   // 🧱 Définir les colonnes
@@ -69,15 +76,25 @@ const DataTable = ({ refresh }) => {
     { Header: '60 ans et +', accessor: 'ageSup60' },
     { Header: 'ID Interne', accessor: 'idInterne' },
     {
+      
       Header: 'Action',
-      disableFilters: true, // Ne pas filtrer cette colonne
+      disableFilters: true,
       Cell: ({ row }) => (
-        <button onClick={() => handleDelete(row.original._id)}>Supprimer</button>
+        <>
+          <button onClick={() => handleEdit(row.original._id)} style={{ marginRight: '8px' }}>
+             Modifier
+          </button>
+          <button onClick={() => handleDelete(row.original._id)}>
+             Supprimer
+          </button>
+        </>
       ),
-    }
+
+
+   }
   ], []);
 
-  // ✅ Définir un filtre par défaut
+  //  Définir un filtre par défaut
   const defaultColumn = useMemo(() => ({
     Filter: ColumnFilter,
   }), []);
@@ -100,7 +117,7 @@ const DataTable = ({ refresh }) => {
     {
       columns,
       data,
-      defaultColumn, // 👈 Ajout important
+      defaultColumn, 
       initialState: { pageSize: 25 },
     },
     useFilters,
@@ -126,7 +143,7 @@ const DataTable = ({ refresh }) => {
         <button onClick={handleResetFilters}>Réinitialiser les filtres</button>
       </div>
 
-      {/* 🔢 Message ligne filtrée */}
+      {/* Message ligne filtrée */}
       <div style={{ marginBottom: '10px', fontStyle: 'italic' }}>
         {rows.length} lignes affichées sur {data.length}
       </div>
@@ -156,8 +173,10 @@ const DataTable = ({ refresh }) => {
         <tbody {...getTableBodyProps()}>
           {page.map(row => {
             prepareRow(row);
+            const rowProps = row.getRowProps();
             return (
-              <tr {...row.getRowProps()} key={row.id}>
+              <tr key={rowProps.key} {...rowProps}>
+
                 {row.cells.map(cell => (
                   <td {...cell.getCellProps()} key={cell.column.id}>
                     {cell.render('Cell')}

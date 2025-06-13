@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EditStatisticsDataForm from './components/EditStatisticsDataForm'; 
+import EditDataForm from './components/EditDataForm';
+
 
 
 // Composant de navigation
@@ -94,6 +96,8 @@ function App() {
         <Route path="/collection1" element={<FirstCollectionPage />} />
         <Route path="/collection2" element={<SecondCollectionPage />} />
         <Route path="/modifier-collection2/:id" element={<EditStatisticsDataForm />} />
+        <Route path="/modifier-collection1/:id" element={<EditDataForm />} />
+
 
       </Routes>
     </Router>
