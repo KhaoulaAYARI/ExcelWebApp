@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import * as XLSX from 'xlsx';
 
 function StatisticsDataTable({ refresh }) {
   const [data, setData] = useState([]);
@@ -91,6 +92,167 @@ function StatisticsDataTable({ refresh }) {
     // Redirige vers une page de modification
     window.location.href = `/modifier-collection2/${id}`;
   };
+  const handleExportExcel = () => {
+    try {
+      // 1. Aplatir la structure imbriquée
+      const flattenData = filteredData.map(item => {
+        const flatItem = {
+          month: item.month,
+          // Général
+          'general.nbCRA': item.general?.nbCRA,
+          'general.nbAccompagnements': item.general?.nbAccompagnements,
+          'general.nbUsagersAccompagnes': item.general?.nbUsagersAccompagnes,
+          'general.nbAccompagnementsIndiv': item.general?.nbAccompagnementsIndiv,
+          'general.nbAteliersCollectifs': item.general?.nbAteliersCollectifs,
+          'general.totalParticipantsAuxAteliers': item.totalParticipantsAuxAteliers?.nbCRA,
+          'general.nbDemandesPonctuelles': item.general?.nbDemandesPonctuelles,
+
+          // Accompagnements poursuivis
+          'accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv': item.accompagnementsPoursuivis?.nbPoursuiteAccompagnementIndiv,
+         'accompagnementsPoursuivis.nbPoursuiteAtelierCollectif': item.accompagnementsPoursuivis?.nbPoursuiteAtelierCollectif,
+         'accompagnementsPoursuivis.nbRedirectionsAutreStructure': item.accompagnementsPoursuivis?.nbRedirectionsAutreStructure,
+          //canauxAccompagnements
+          'canauxAccompagnements.aDomicile': item.canauxAccompagnements?.aDomicile,     
+          'canauxAccompagnements.aDistance': item.canauxAccompagnements?.aDistance,   
+          'canauxAccompagnements.lieuActivite': item.canauxAccompagnements?.lieuActivite,   
+          'canauxAccompagnements.autres': item.canauxAccompagnements?.autres, 
+          //tempsEnAccompagnements
+          'tempsEnAccompagnements.totalHeures': item.tempsEnAccompagnements?.totalHeures,
+          'tempsEnAccompagnements.individuels': item.tempsEnAccompagnements?.individuels,
+          'tempsEnAccompagnements.collectifs': item.tempsEnAccompagnements?.collectifs,
+          'tempsEnAccompagnements.ponctuels': item.tempsEnAccompagnements?.ponctuels,
+          //dureeDesAccompagnements
+          'dureeDesAccompagnements.moins30min': item.dureeDesAccompagnements?.moins30min,
+          'dureeDesAccompagnements.entre30_60min': item.dureeDesAccompagnements?.entre30_60min,
+          'dureeDesAccompagnements.entre60_120min': item.dureeDesAccompagnements?.entre60_120min,
+          'dureeDesAccompagnements.plus120min': item.dureeDesAccompagnements?.plus120min,
+
+          //tranchesAgeDesUsagers
+           'tranchesAgeDesUsagers.moins12ans': item.tranchesAgeDesUsagers?.moins12ans,
+          'tranchesAgeDesUsagers.entre12_18ans': item.tranchesAgeDesUsagers?.entre12_18ans,
+          'tranchesAgeDesUsagers.entre18_35ans': item.tranchesAgeDesUsagers?.entre18_35ans,
+          'tranchesAgeDesUsagers.entre35_60ans': item.tranchesAgeDesUsagers?.entre35_60ans,
+          'tranchesAgeDesUsagers.plus60ans': item.tranchesAgeDesUsagers?.plus60ans,
+          //statutDesUsagers
+          'statutDesUsagers.scolarise': item.statutDesUsagers?.scolarise,
+          'statutDesUsagers.sansEmlpoi': item.statutDesUsagers?.sansEmlpoi,
+          'statutDesUsagers.enEmploi': item.statutDesUsagers?.enEmploi,
+          'statutDesUsagers.retraite': item.statutDesUsagers?.retraite,
+          'statutDesUsagers.nonRenseigne': item.statutDesUsagers?.nonRenseigne,
+          //themesDesAccompagnements
+           'themesDesAccompagnements.accompagnerUnAidant': item.themesDesAccompagnements?.accompagnerUnAidant,
+          'themesDesAccompagnements.budget': item.themesDesAccompagnements?.budget,
+          'themesDesAccompagnements.gestionDeContenusNumeriques': item.themesDesAccompagnements?.gestionDeContenusNumeriques,
+          'themesDesAccompagnements.courriels': item.themesDesAccompagnements?.courriels,
+          'themesDesAccompagnements.cultureNumerique': item.themesDesAccompagnements?.cultureNumerique,
+          'themesDesAccompagnements.demarcheEnLigne': item.themesDesAccompagnements?.demarcheEnLigne,
+          'themesDesAccompagnements.diagnosticNumerique': item.themesDesAccompagnements?.diagnosticNumerique,
+          'themesDesAccompagnements.echangeAvecSesProches': item.themesDesAccompagnements?.echangeAvecSesProches,
+          'themesDesAccompagnements.prendreEnMainDuMateriel': item.themesDesAccompagnements?.prendreEnMainDuMateriel,
+          'themesDesAccompagnements.fraudeEtHarcelement': item.themesDesAccompagnements?.fraudeEtHarcelement,
+          'themesDesAccompagnements.naviguerSurInternet': item.themesDesAccompagnements?.naviguerSurInternet,
+          'themesDesAccompagnements.sante': item.themesDesAccompagnements?.sante,
+          'themesDesAccompagnements.scolaire': item.themesDesAccompagnements?.scolaire,
+          'themesDesAccompagnements.securiserEquipement': item.themesDesAccompagnements?.securiserEquipement,
+          'themesDesAccompagnements.smartphone': item.themesDesAccompagnements?.smartphone,
+          'themesDesAccompagnements.numeriqueTPE_PME': item.themesDesAccompagnements?.numeriqueTPE_PME,
+           'themesDesAccompagnements.bureautique': item.themesDesAccompagnements?.bureautique,
+           'themesDesAccompagnements.emlpoiEtFormation': item.themesDesAccompagnements?.emlpoiEtFormation,
+          'themesDesAccompagnements.autre': item.themesDesAccompagnements?.autre,
+
+
+        };
+        return flatItem;
+      });
+
+      // 2. Créer les en-têtes manuellement (ou générés dynamiquement)
+      const headers = [
+        { key: 'month', label: 'Mois' },
+        { key: 'general.nbCRA', label: 'Nb CRA' },
+        { key: 'general.nbAccompagnements', label: 'Nb Accompagnements' },
+        { key: 'general.nbUsagersAccompagnes', label: 'nbUsagersAccompagnes' },
+        { key: 'general.nbAccompagnementsIndiv', label: 'nbAccompagnementsIndiv' },
+        { key: 'general.nbAteliersCollectifs', label: 'nbAteliersCollectifs' },
+        { key: 'general.totalParticipantsAuxAteliers', label: 'totalParticipantsAuxAteliers' },
+        { key: 'general.nbDemandesPonctuelles', label: 'nbDemandesPonctuelles' },
+
+        { key: 'accompagnementsPoursuivis.nbPoursuiteAccompagnementIndiv', label: 'nbPoursuiteAccompagnementIndiv' },
+        { key: 'accompagnementsPoursuivis.nbPoursuiteAtelierCollectif', label: 'nbPoursuiteAtelierCollectif' },
+        { key: 'accompagnementsPoursuivis.nbRedirectionsAutreStructure', label: 'nbRedirectionsAutreStructure' },
+
+        { key: 'canauxAccompagnements.aDomicile', label: 'aDomicile' },
+        { key: 'canauxAccompagnements.aDistance', label: 'aDistance' },
+        { key: 'canauxAccompagnements.lieuActivite', label: 'lieuActivite' },
+        { key: 'canauxAccompagnements.autres', label: 'autres' },
+
+        { key: 'tempsEnAccompagnements.totalHeures', label: 'totalHeures' },
+        { key: 'tempsEnAccompagnements.individuels', label: 'individuels' },
+        { key: 'tempsEnAccompagnements.collectifs', label: 'collectifs' },
+        { key: 'tempsEnAccompagnements.ponctuels', label: 'ponctuels' },
+
+        { key: 'dureeDesAccompagnements.moins30min', label: 'moins30min' },
+        { key: 'dureeDesAccompagnements.entre30_60min', label: 'entre30_60min' },
+        { key: 'dureeDesAccompagnements.entre60_120min', label: 'entre60_120min' },
+        { key: 'dureeDesAccompagnements.plus120min', label: 'plus120min' },
+
+        { key: 'tranchesAgeDesUsagers.moins12ans', label: 'moins12ans' },
+        { key: 'tranchesAgeDesUsagers.entre12_18ans', label: 'entre12_18ans' },
+        { key: 'tranchesAgeDesUsagers.entre18_35ans', label: 'entre18_35ans' },
+         { key: 'tranchesAgeDesUsagers.entre35_60ans', label: 'entre35_60ans' },
+        { key: 'tranchesAgeDesUsagers.plus60ans', label: 'plus60ans' },
+
+        { key: 'statutDesUsagers.scolarise', label: 'scolarise' },
+        { key: 'statutDesUsagers.sansEmlpoi', label: 'sansEmlpoi' },
+         { key: 'statutDesUsagers.enEmploi', label: 'enEmploi' },
+        { key: 'statutDesUsagers.retraite', label: 'retraite' },
+         { key: 'statutDesUsagers.nonRenseigne', label: 'nonRenseigne' },
+
+        { key: 'themesDesAccompagnements.accompagnerUnAidant', label: 'accompagnerUnAidant' },
+        { key: 'themesDesAccompagnements.budget', label: 'budget' },
+        { key: 'themesDesAccompagnements.gestionDeContenusNumeriques', label: 'gestionDeContenusNumeriques' },
+         { key: 'themesDesAccompagnements.courriels', label: 'courriels' },
+        { key: 'themesDesAccompagnements.cultureNumerique', label: 'cultureNumerique' },
+         { key: 'themesDesAccompagnements.demarcheEnLigne', label: 'demarcheEnLigne' },
+        { key: 'themesDesAccompagnements.diagnosticNumerique', label: 'diagnosticNumerique' },
+        { key: 'themesDesAccompagnements.echangeAvecSesProches', label: 'echangeAvecSesProches' },
+        { key: 'themesDesAccompagnements.prendreEnMainDuMateriel', label: 'prendreEnMainDuMateriel' },
+         { key: 'themesDesAccompagnements.fraudeEtHarcelement', label: 'fraudeEtHarcelement' },
+        { key: 'themesDesAccompagnements.naviguerSurInternet', label: 'naviguerSurInternet' },
+         { key: 'themesDesAccompagnements.sante', label: 'sante' },
+        { key: 'themesDesAccompagnements.scolaire', label: 'scolaire' },
+        { key: 'themesDesAccompagnements.securiserEquipement', label: 'securiserEquipement' },
+        { key: 'themesDesAccompagnements.smartphone', label: 'smartphone' },
+         { key: 'themesDesAccompagnements.numeriqueTPE_PME', label: 'numeriqueTPE_PME' },
+        { key: 'themesDesAccompagnements.bureautique', label: 'bureautique' },
+         { key: 'themesDesAccompagnements.emlpoiEtFormation', label: 'emlpoiEtFormation' },
+        { key: 'themesDesAccompagnements.autre', label: 'autre' },
+      ];
+
+      // 3. Créer le workbook
+      const wb = XLSX.utils.book_new();
+      
+      // 4. Préparer les données pour l'export
+      const exportData = [
+        headers.map(h => h.label), // Ligne d'en-tête
+        ...flattenData.map(item => 
+          headers.map(header => item[header.key] || '')
+        )
+      ];
+
+      // 5. Créer la feuille Excel
+      const ws = XLSX.utils.aoa_to_sheet(exportData);
+      
+      // 6. Ajouter la feuille au workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Statistiques");
+      
+      // 7. Exporter le fichier
+      XLSX.writeFile(wb, `statistiques_${new Date().toISOString().split('T')[0]}.xlsx`);
+
+    } catch (error) {
+      console.error("Erreur lors de l'export:", error);
+      alert("Erreur lors de la génération du fichier Excel");
+    }
+  };
   const resetFilters = () => {
   setGlobalFilter('');
   setColumnFilters({});
@@ -107,6 +269,12 @@ function StatisticsDataTable({ refresh }) {
             onChange={e => setGlobalFilter(e.target.value)}
           />
           <button onClick={resetFilters}>Réinitialiser les filtres</button>
+           <button 
+              onClick={handleExportExcel}
+              style={{ marginLeft: '10px', background: '#4CAF50', color: 'white' }}
+            >
+              Exporter en Excel
+          </button>
           <p>{filteredData.length} lignes affichées sur {data.length}</p>
         </div>
 
