@@ -86,77 +86,80 @@ function StatisticsDataForm({ onAdded }) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    console.log("📤 Données envoyées :", formData);
+    try {
+      const res = await fetch('http://localhost:5000/api/statistics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
 
-    const res = await fetch('http://localhost:5000/api/statistics', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
+      const result = await res.json();
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("❌ Erreur brute serveur :", errorText);
-      alert('Erreur serveur : ' + res.status + ' - ' + res.statusText);
-      return;
+      if (res.ok && result.success) {
+        alert('✅ Enregistrement ajouté');
+        onAdded();
+      } else {
+        alert('❌ Erreur : ' + (result.message || res.statusText));
+      }
+    } catch (error) {
+      console.error("Erreur :", error);
+      alert('Erreur critique : ' + error.message);
     }
-
-    const result = await res.json();
-
-    if (result.success) {
-      alert('✅ Enregistrement ajouté');
-      onAdded();
-    } else {
-      alert('❌ Erreur de traitement : ' + (result.message || 'réponse inattendue'));
-    }
-
-  } catch (error) {
-    console.error("🔥 Exception lors de l'envoi :", error);
-    alert('Erreur critique : ' + error.message);
-  }
-};
-
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Ajouter des données statistiques</h2>
-
-      <input
-        name="month"
-        placeholder="Mois"
-        value={formData.month}
-        onChange={handleTopLevelChange}
-        required
-      />
+    <form onSubmit={handleSubmit} className="container my-4">
+      <div className="mb-4">
+        <label className="form-label fw-bold">Mois :</label>
+        <input
+          type="text"
+          name="month"
+          className="form-control"
+          placeholder="Ex: 2025-06"
+          value={formData.month}
+          onChange={handleTopLevelChange}
+          required
+        />
+      </div>
 
       {Object.entries(formData).map(([section, values]) => {
         if (typeof values !== 'object') return null;
+
         return (
-          <fieldset key={section} style={{ marginBottom: '1rem' }}>
-            <legend>{section}</legend>
-            {Object.entries(values).map(([key, val]) => (
-              <div key={key}>
-                <label>{key}:</label>
-                <input
-                  type="number"
-                  value={val}
-                  onChange={(e) => handleChange(section, key, e.target.value)}
-                />
-              </div>
-            ))}
-          </fieldset>
+          <div className="card mb-4 shadow-sm" key={section}>
+            <div className="card-header bg-primary text-white text-capitalize fw-bold">
+              {section.replace(/([A-Z])/g, ' $1')}
+            </div>
+            <div className="card-body row row-cols-1 row-cols-md-2 g-3">
+              {Object.entries(values).map(([key, val]) => (
+                <div className="col" key={key}>
+                  <label className="form-label">{key} :</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    value={val}
+                    onChange={(e) => handleChange(section, key, e.target.value)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         );
       })}
 
-      <button type="submit">Enregistrer</button>
+      <div className="text-center">
+        <button type="submit" className="btn btn-success px-4 py-2 fw-bold">
+          ➕ Ajouter
+        </button>
+      </div>
     </form>
   );
 }
 
 export default StatisticsDataForm;
+
 
 

@@ -259,59 +259,58 @@ function StatisticsDataTable({ refresh }) {
   };
 
   return (
-    <div>
-      <h2>Données Statistiques Importées</h2>
-              <div style={{ marginBottom: '10px' }}>
+    <div className="container my-5">
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <h2 className="card-title">📊 Données Statistiques Importées</h2>
+
+          <div className="d-flex flex-wrap gap-2 mb-3">
           <input
             type="text"
-            placeholder="Filtre global..."
+            className="form-control form-control-sm"
+            placeholder="🔍 Filtre global..."
             value={globalFilter}
             onChange={e => setGlobalFilter(e.target.value)}
-          />
-          <button onClick={resetFilters}>Réinitialiser les filtres</button>
-           <button 
-              onClick={handleExportExcel}
-              style={{ marginLeft: '10px', background: '#4CAF50', color: 'white' }}
-            >
-              Exporter en Excel
-          </button>
-          <p>{filteredData.length} lignes affichées sur {data.length}</p>
-        </div>
+            style={{ maxWidth: '300px' }}
+          /> 
+          <button onClick={resetFilters} className="btn btn-secondary btn-sm">Réinitialiser les filtres</button>
+          <button onClick={handleExportExcel} className="btn btn-success btn-sm">Exporter en Excel</button>
+          </div>
+          <p className="fst-italic">
+          {filteredData.length} lignes affichées sur {data.length}
+          </p>
 
-      <table border="1" cellPadding="5">
-        <thead>
-          <tr>
-            <th>Mois
-            <br/>
-            <input
-            type="text"
-            value={columnFilters['month'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, month: e.target.value }))
-             }
-            placeholder="Filtrer"
-            />
-            </th>
-            <th>nbCRA<br/>
-            <input
-            type="text"
-            value={columnFilters['general.nbCRA'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, 'general.nbCRA': e.target.value }))
-             }
-            placeholder="Filtrer"
-            />
-            </th>
-            <th>nbAccompagnements<br/>
-            <input
-            type="text"
-            value={columnFilters['general.nbAccompagnements'] || ''}
-            onChange={e =>
-            setColumnFilters(prev => ({ ...prev, 'general.nbAccompagnements': e.target.value }))
-             }
-            placeholder="Filtrer"
-            />
-            </th>
+        <div className="table-responsive" style={{ maxHeight: '600px', overflow: 'auto' }}>
+            <table className="table table-bordered table-sm table-hover align-middle">
+              <thead className="table-light sticky-top">
+                <tr>
+                  <th>Mois<br/>
+                    <input
+                      className="form-control form-control-sm"
+                      type="text"
+                      value={columnFilters['month'] || ''}
+                      onChange={e => setColumnFilters(prev => ({ ...prev, month: e.target.value }))}
+                      placeholder="Filtrer"
+                    />
+                  </th>
+                 <th>nbCRA<br/>
+                    <input
+                      className="form-control form-control-sm"
+                      type="text"
+                      value={columnFilters['general.nbCRA'] || ''}
+                      onChange={e => setColumnFilters(prev => ({ ...prev, 'general.nbCRA': e.target.value }))}
+                      placeholder="Filtrer"
+                    />
+                  </th>
+                  <th>nbAccompagnements<br/>
+                    <input
+                      className="form-control form-control-sm"
+                      type="text"
+                      value={columnFilters['general.nbAccompagnements'] || ''}
+                      onChange={e => setColumnFilters(prev => ({ ...prev, 'general.nbAccompagnements': e.target.value }))}
+                      placeholder="Filtrer"
+                    />
+                  </th>
             <th>nbUsagersAccompagnes<br/>
             <input
             type="text"
@@ -734,9 +733,9 @@ function StatisticsDataTable({ refresh }) {
              }
             placeholder="Filtrer"
             /></th>
-            <th>Actions</th> 
-          </tr>
-        </thead>
+            <th>Actions</th>
+                </tr>
+              </thead>
         <tbody>
         {filteredData.map((item, idx) => {
         
@@ -802,20 +801,27 @@ function StatisticsDataTable({ refresh }) {
             <td>{item.themesDesAccompagnements?.emlpoiEtFormation ?? '-'}</td>
             <td>{item.themesDesAccompagnements?.autre ?? '-'}</td>
             <td>
-                  <button onClick={() => handleEdit(item._id)}>Modifier</button>
-                  <button onClick={() => handleDelete(item._id)}>Supprimer</button>
-                </td>
-          </tr>
+                 <div className="d-flex gap-1">
+                        <button onClick={() => handleEdit(item._id)} className="btn btn-warning btn-sm">Modifier</button>
+                        <button onClick={() => handleDelete(item._id)} className="btn btn-danger btn-sm">Supprimer</button>
+                      </div>
+                    </td>
+        </tr>
         );
       })}
-    </tbody>
+              ;
+            
+              </tbody>
+            </table>
+          </div>
 
-      </table>
+          {filteredData.length === 0 && (
+            <p className="text-muted mt-3">Aucune donnée ne correspond aux filtres.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
 export default StatisticsDataTable;
-
-
-

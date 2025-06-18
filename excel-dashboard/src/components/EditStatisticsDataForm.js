@@ -40,47 +40,67 @@ function EditStatisticsDataForm() {
 
     if (res.ok) {
       alert("✅ Donnée modifiée avec succès");
-      navigate('/collection2'); // Retour à la liste
+      navigate('/collection2');
     } else {
       alert("❌ Échec de la mise à jour");
     }
   };
 
-  if (!formData) return <p>Chargement en cours...</p>;
+  if (!formData) return <p className="text-center mt-5">Chargement en cours...</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>📝 Modifier les données statistiques</h2>
+    <div className="container my-5">
+      <form onSubmit={handleSubmit}>
+        <h2 className="mb-4">📝 Modifier les données statistiques</h2>
 
-      <label>Mois :</label>
-      <input
-        name="month"
-        value={formData.month}
-        onChange={handleTopLevelChange}
-        required
-      />
+        <div className="card mb-4 shadow-sm">
+          <div className="card-body row">
+            <div className="col-md-6">
+              <label className="form-label fw-bold">Mois :</label>
+              <input
+                type="text"
+                name="month"
+                value={formData.month}
+                onChange={handleTopLevelChange}
+                className="form-control"
+                required
+              />
+            </div>
+          </div>
+        </div>
 
-      {Object.entries(formData).map(([section, values]) => {
-        if (typeof values !== 'object') return null;
-        return (
-          <fieldset key={section} style={{ marginTop: '1rem' }}>
-            <legend>{section}</legend>
-            {Object.entries(values).map(([key, val]) => (
-              <div key={key}>
-                <label>{key}:</label>
-                <input
-                  type="number"
-                  value={val}
-                  onChange={(e) => handleChange(section, key, e.target.value)}
-                />
+        {Object.entries(formData).map(([section, values]) => {
+          if (typeof values !== 'object') return null;
+
+          return (
+            <div className="card mb-4 shadow-sm" key={section}>
+              <div className="card-header bg-primary text-white fw-bold text-capitalize">
+                {section.replace(/([A-Z])/g, ' $1')}
               </div>
-            ))}
-          </fieldset>
-        );
-      })}
+              <div className="card-body row row-cols-1 row-cols-md-2 g-3">
+                {Object.entries(values).map(([key, val]) => (
+                  <div className="col" key={key}>
+                    <label className="form-label fw-semibold">{key}</label>
+                    <input
+                      type="number"
+                      value={val}
+                      onChange={(e) => handleChange(section, key, e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
 
-      <button type="submit" style={{ marginTop: '1rem' }}>✅ Enregistrer</button>
-    </form>
+        <div className="text-center mt-4">
+          <button type="submit" className="btn btn-success btn-lg">
+            ✅ Enregistrer les modifications
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 

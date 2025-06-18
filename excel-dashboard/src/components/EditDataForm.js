@@ -37,30 +37,72 @@ function EditDataForm() {
     }
   };
 
-  if (!formData) return <p>Chargement...</p>;
+  if (!formData) return <p className="text-center mt-5">Chargement...</p>;
+
+  // Regroupement logique des champs
+  const fieldGroups = [
+    {
+      title: '🗂 Données générales',
+      fields: ['dateAccompagnement', 'dateCreation', 'idInterne']
+    },
+    {
+      title: '📍 Localisation',
+      fields: ['commune', 'codeCommune', 'codePostal', 'departement', 'region', 'lieuActivite', 'typeLieuActivite', 'siret']
+    },
+    {
+      title: '💼 Activité',
+      fields: ['canal', 'typeActivite', 'themes', 'sousThemesInformatique', 'sousThemeAccompagner', 'sousThemeSante', 'sousThemeBureautique']
+    },
+    {
+      title: '👥 Participants',
+      fields: ['nbParticipants', 'nbParticipantsRecurrents', 'nbPoursuiviIndividuel', 'nbPoursuiviAtelier', 'nbRedirection']
+    },
+    {
+      title: '📌 Statuts',
+      fields: ['statutEmploie', 'statutEtudiant', 'statutRetraite', 'statutSansEmlpoi', 'statutHeterogene']
+    },
+    {
+      title: '🎂 Tranches d’âge',
+      fields: ['ageInf12', 'ageEntre12et17', 'ageEntre18et35', 'ageEntre35et60', 'ageSup60']
+    }
+  ];
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: '20px' }}>
-      <h2>📝 Modifier un enregistrement</h2>
+    <div className="container my-5">
+      <form onSubmit={handleSubmit}>
+        <h2 className="mb-4">📝 Modifier un enregistrement</h2>
 
-      {Object.entries(formData).map(([key, value]) => (
-        key !== '_id' && (
-          <div key={key} style={{ marginBottom: '10px' }}>
-            <label>{key} :</label>
-            <input
-              type="text"
-              name={key}
-              value={value}
-              onChange={handleChange}
-              style={{ marginLeft: '10px', width: '300px' }}
-            />
+        {fieldGroups.map((group, idx) => (
+          <div className="card mb-4 shadow-sm" key={idx}>
+            <div className="card-header bg-info text-white fw-bold">
+              {group.title}
+            </div>
+            <div className="card-body row row-cols-1 row-cols-md-2 g-3">
+              {group.fields.map(field => (
+                <div className="col" key={field}>
+                  <label className="form-label fw-semibold">{field}</label>
+                  <input
+                    type="text"
+                    name={field}
+                    value={formData[field] || ''}
+                    onChange={handleChange}
+                    className="form-control"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        )
-      ))}
+        ))}
 
-      <button type="submit">✅ Enregistrer</button>
-    </form>
+        <div className="text-center mt-4">
+          <button type="submit" className="btn btn-primary btn-lg">
+            ✅ Enregistrer les modifications
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
 
 export default EditDataForm;
+
