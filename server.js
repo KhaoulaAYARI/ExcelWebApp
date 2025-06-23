@@ -6,6 +6,8 @@ const uploadRoute = require('./routes/uploadRoute');// Collection 1 upload
 const excelRoutes = require('./routes/excelDataRoutes'); // Collection 1 CRUD
 const statisticsRoutes = require('./routes/statisticsRoutes'); // Collection 2 (statistiques) UPLOAD
 const statisticsExcelRoutes=require('./routes/statisticsExcelRoutes');
+const nbAccompagnementsRoutes=require('./routes/nbAccompagnementsRoutes');
+
 
 const app = express();
 
@@ -36,6 +38,7 @@ app.use('/upload', uploadRoute); // Pour l'import Excel
 app.use('/api/excel', excelRoutes); // Collection Excel classique
 app.use('/api/excel', statisticsRoutes); // Pour l'import Excel COLLECTION2
 app.use('/api/statistics', statisticsExcelRoutes);//COLLECTION2
+app.use('/api/nbAccompagnement', nbAccompagnementsRoutes);
 
 
 app.listen(5000, () => {

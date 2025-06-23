@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
+import NbAccompagnementsChart from './NbAccompagnementsChart';
+import { useNavigate } from 'react-router-dom';
 
 function StatisticsDataTable({ refresh }) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [columnFilters, setColumnFilters] = useState({});
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     fetch('http://localhost:5000/api/statistics')
@@ -279,6 +283,22 @@ function StatisticsDataTable({ refresh }) {
           <p className="fst-italic">
           {filteredData.length} lignes affichées sur {data.length}
           </p>
+
+          {/* Les boutons des grapgiques */}
+          <div>
+            <button onClick={() => navigate('/collection2/graphique')} className="btn btn-info btn-sm">
+              Voir Nombre d’accompagnements/mois 
+            </button>
+          </div>
+          <div>
+            <button
+            onClick={() => navigate('/collection2/graphiqueCanaux')}
+            className="btn btn-warning btn-sm"
+             >
+            Canaux d’accompagnement 📶
+            </button>
+          </div>
+          <br></br>
 
         <div className="table-responsive" style={{ maxHeight: '600px', overflow: 'auto' }}>
             <table className="table table-bordered table-sm table-hover align-middle">

@@ -20,7 +20,7 @@ const initialState = {
   nbPoursuiviAtelier: '',
   nbRedirection: '',
   statutEmploie: '',
-  statutEtudiant: '',
+  statutEtudiant:'',
   statutRetraite: '',
   statutSansEmlpoi: '',
   statutHeterogene: '',
@@ -32,7 +32,7 @@ const initialState = {
   themes: '',
   sousThemesInformatique: '',
   sousThemeAccompagner: '',
-  sousThemeSante: '',
+  sousThemeSante:'',
   sousThemeBureautique: '',
   idInterne: ''
 };
@@ -69,7 +69,7 @@ const DataForm = ({ onAdded }) => {
     }
   };
 
-  const renderInput = (name, label, type = "text") => (
+  const renderInput = (name, label, type = "text", placeholder) => (
     <div className="col-md-6" key={name}>
       <label className="form-label fw-semibold">{label}</label>
       <input
@@ -77,7 +77,8 @@ const DataForm = ({ onAdded }) => {
         name={name}
         value={form[name]}
         onChange={handleChange}
-        required
+        placeholder={placeholder || `Ex: ${label}`}
+        //required
         className="form-control"
       />
     </div>
@@ -89,7 +90,7 @@ const DataForm = ({ onAdded }) => {
 
       {[
         {
-          title: '🗂 Données générales',
+          title: 'Données générales',
           fields: [
             { name: 'dateAccompagnement', label: 'Date accompagnement', type: 'date' },
             { name: 'dateCreation', label: 'Date création', type: 'date' },
@@ -97,58 +98,58 @@ const DataForm = ({ onAdded }) => {
           ]
         },
         {
-          title: '📍 Localisation',
+          title: 'Localisation',
           fields: [
-            { name: 'commune', label: 'Commune' },
-            { name: 'codeCommune', label: 'Code Commune' },
-            { name: 'codePostal', label: 'Code Postal' },
-            { name: 'departement', label: 'Département' },
-            { name: 'region', label: 'Région' },
-            { name: 'lieuActivite', label: 'Lieu d’activité' },
-            { name: 'typeLieuActivite', label: 'Type lieu d’activité' },
-            { name: 'siret', label: 'SIRET' }
+            { name: 'commune', label: 'Commune', placeholder: 'Ex: NANCY' },
+            { name: 'codeCommune', label: 'Code Commune', placeholder: 'Ex: 54395' },
+            { name: 'codePostal', label: 'Code Postal', placeholder: 'Ex: 54100' },
+            { name: 'departement', label: 'Département', placeholder: 'Ex: 54' },
+            { name: 'region', label: 'Région', placeholder: 'Ex: 44' },
+            { name: 'lieuActivite', label: 'Lieu d’activité', placeholder: 'Ex: CENTRE SOCIAL' },
+            { name: 'typeLieuActivite', label: 'Type lieu d’activité', placeholder: 'Ex: Public' },
+            { name: 'siret', label: 'SIRET', placeholder: 'Ex: 12345678901234' }
           ]
         },
         {
-          title: '💼 Activité',
+          title: 'Activité',
           fields: [
-            { name: 'canal', label: 'Canal' },
-            { name: 'typeActivite', label: 'Type d’activité' },
-            { name: 'themes', label: 'Thèmes' },
-            { name: 'sousThemesInformatique', label: 'Sous-thème informatique' },
-            { name: 'sousThemeAccompagner', label: 'Sous-thème accompagner' },
-            { name: 'sousThemeSante', label: 'Sous-thème santé' },
-            { name: 'sousThemeBureautique', label: 'Sous-thème bureautique' }
+            { name: 'canal', label: 'Canal', placeholder: 'Ex: rattachement' },
+            { name: 'typeActivite', label: 'Type d’activité', placeholder: 'collectif' },
+            { name: 'themes', label: 'Thèmes', placeholder: 'equipement informatique' },
+            { name: 'sousThemesInformatique', label: 'Sous-thème informatique', placeholder: '' },
+            { name: 'sousThemeAccompagner', label: 'Sous-thème accompagner' , placeholder: ''},
+            { name: 'sousThemeSante', label: 'Sous-thème santé', placeholder: '' },
+            { name: 'sousThemeBureautique', label: 'Sous-thème bureautique', placeholder: '' }
           ]
         },
         {
-          title: '👥 Participants',
+          title: 'Participants',
           fields: [
-            { name: 'nbParticipants', label: 'Nombre de participants' },
-            { name: 'nbParticipantsRecurrents', label: 'Participants récurrents' },
-            { name: 'nbPoursuiviIndividuel', label: 'Suivi individuel' },
-            { name: 'nbPoursuiviAtelier', label: 'Suivi atelier' },
-            { name: 'nbRedirection', label: 'Redirections' }
+            { name: 'nbParticipants', label: 'Nombre de participants' , placeholder: 'Ex: 4'},
+            { name: 'nbParticipantsRecurrents', label: 'Participants récurrents', placeholder: 'Ex: 1' },
+            { name: 'nbPoursuiviIndividuel', label: 'Suivi individuel' , placeholder: 'Ex: 1' },
+            { name: 'nbPoursuiviAtelier', label: 'Suivi atelier' , placeholder: 'Ex: 1' },
+            { name: 'nbRedirection', label: 'Redirections' , placeholder: 'Ex: 0' }
           ]
         },
         {
-          title: '📌 Statuts',
+          title: 'Statuts',
           fields: [
-            { name: 'statutEmploie', label: 'Employé' },
-            { name: 'statutEtudiant', label: 'Étudiant' },
-            { name: 'statutRetraite', label: 'Retraité' },
-            { name: 'statutSansEmlpoi', label: 'Sans emploi' },
-            { name: 'statutHeterogene', label: 'Hétérogène' }
+            { name: 'statutEmploie', label: 'Employé' , placeholder: 'Ex: 1'},
+            { name: 'statutEtudiant', label: 'Étudiant' , placeholder: 'Ex: 1'},
+            { name: 'statutRetraite', label: 'Retraité' , placeholder: 'Ex: 1'},
+            { name: 'statutSansEmlpoi', label: 'Sans emploi' , placeholder: 'Ex: 1'},
+            { name: 'statutHeterogene', label: 'Hétérogène', placeholder: 'Ex: 1' }
           ]
         },
         {
-          title: '🎂 Tranches d’âge',
+          title: 'Tranches d’âge',
           fields: [
-            { name: 'ageInf12', label: 'Moins de 12 ans' },
-            { name: 'ageEntre12et17', label: '12-17 ans' },
-            { name: 'ageEntre18et35', label: '18-35 ans' },
-            { name: 'ageEntre35et60', label: '35-60 ans' },
-            { name: 'ageSup60', label: '60 ans et +' }
+            { name: 'ageInf12', label: 'Moins de 12 ans'  , placeholder: 'Ex: 1'},
+            { name: 'ageEntre12et17', label: '12-17 ans' , placeholder: 'Ex: 1' },
+            { name: 'ageEntre18et35', label: '18-35 ans' , placeholder: 'Ex: 1' },
+            { name: 'ageEntre35et60', label: '35-60 ans' , placeholder: 'Ex: 1' },
+            { name: 'ageSup60', label: '60 ans et +'  , placeholder: 'Ex: 1'}
           ]
         }
       ].map((section, idx) => (
@@ -158,7 +159,7 @@ const DataForm = ({ onAdded }) => {
           </div>
           <div className="card-body row row-cols-1 row-cols-md-2 g-3">
             {section.fields.map(field =>
-              renderInput(field.name, field.label, field.type)
+              renderInput(field.name, field.label, field.type, field.placeholder)
             )}
           </div>
         </div>

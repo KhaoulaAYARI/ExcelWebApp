@@ -17,15 +17,19 @@ import ExcelUpload from './components/ExcelUpload';
 import StatisticsDataForm from './components/StatisticsDataForm';
 import StatisticsDataTable from './components/StatisticsDataTable';
 import StatisticsExcelUpload from './components/StatisticsExcelUpload';
+import NbAccompagnementPage from './pages/NbAccompagnementPage'; 
+import CanauxAccompagnementPage from './pages/CanauxAccompagnementPage';
 
 function HomePage() {
   return (
     <div style={{ padding: '20px' }}>
       <h1>🏠 Accueil</h1>
+      <h2>Bienvenue sur l'application Excel WebApp</h2>
+
       <p>Choisissez une collection :</p>
       <ul>
-        <li><a href="/collection1">Première collection</a></li>
-        <li><a href="/collection2">Deuxième collection (Statistiques)</a></li>
+        <li><a href="/collection1">📄 Données Excel classiques</a></li>
+        <li><a href="/collection2">📊 Données Statistiques mensuelles</a></li>
       </ul>
     </div>
   );
@@ -97,7 +101,10 @@ function App() {
         <Route path="/collection2" element={<SecondCollectionPage />} />
         <Route path="/modifier-collection2/:id" element={<EditStatisticsDataForm />} />
         <Route path="/modifier-collection1/:id" element={<EditDataForm />} />
+        <Route path="/collection2/graphique" element={<NbAccompagnementPage />} />
+        <Route path="/collection2/graphiqueCanaux" element={<CanauxAccompagnementPage />} />
 
+        
 
       </Routes>
     </Router>

@@ -118,7 +118,7 @@ function StatisticsDataForm({ onAdded }) {
           type="text"
           name="month"
           className="form-control"
-          placeholder="Ex: 2025-06"
+          placeholder="Ex: 06/2025"
           value={formData.month}
           onChange={handleTopLevelChange}
           required
