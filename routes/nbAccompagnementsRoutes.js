@@ -33,7 +33,23 @@ router.get('/', async(req,res)=>{
           totalADomicile: { $sum: "$canauxAccompagnements.aDomicile" },
           totalADistance: { $sum: "$canauxAccompagnements.aDistance" },
           totalLieuActivite: { $sum: "$canauxAccompagnements.lieuActivite" },
-          totalAutres: { $sum: "$canauxAccompagnements.autres" }
+          totalAutres: { $sum: "$canauxAccompagnements.autres" },
+          totalMoins30min: { $sum: "$dureeDesAccompagnements.moins30min" },
+          totalEntre30_60min: { $sum: "$dureeDesAccompagnements.entre30_60min" },
+          totalEntre60_120min: { $sum: "$dureeDesAccompagnements.entre60_120min" },
+          totalPlus120min: { $sum: "$dureeDesAccompagnements.plus120min" },
+          totalMoins12ans: { $sum: "$tranchesAgeDesUsagers.moins12ans" },
+          totalEntre12_18ans: { $sum: "$tranchesAgeDesUsagers.entre12_18ans" },
+          totalEntre18_35ans: { $sum: "$tranchesAgeDesUsagers.entre18_35ans" },
+          totalEntre35_60ans: { $sum: "$tranchesAgeDesUsagers.entre35_60ans" },
+          totalPlus60ans: { $sum: "$tranchesAgeDesUsagers.plus60ans" },
+          totalScolarise: { $sum: "$statutDesUsagers.scolarise" },
+          totalSansEmploi: { $sum: "$statutDesUsagers.sansEmlpoi" },
+          totalEnEmploi: { $sum: "$statutDesUsagers.enEmploi" },
+          totalRetraite: { $sum: "$statutDesUsagers.retraite" },
+          totalNonRenseigne: { $sum: "$statutDesUsagers.nonRenseigne" },
+
+
 
         }
       },

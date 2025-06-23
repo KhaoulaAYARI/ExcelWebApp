@@ -1,14 +1,14 @@
 import React from 'react';
-import CanauxAccompagnementChart from '../components/CanauxAccompagnementChart';
 import { Link } from 'react-router-dom';
+import DureeAccompagnementChart from '../components/DureeAccompagnementChart';
 
-const CanauxAccompagnementPage = () => {
+const DureeAccompagnementPage = () => {
   return (
     <div className="container mt-4">
       <Link to="/collection2" className="btn btn-outline-primary mb-3">← Retour</Link>
-      <CanauxAccompagnementChart />
+      <DureeAccompagnementChart />
     </div>
   );
 };
 
-export default CanauxAccompagnementPage;
+export default DureeAccompagnementPage;

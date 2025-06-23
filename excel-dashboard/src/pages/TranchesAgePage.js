@@ -1,14 +1,14 @@
 import React from 'react';
-import CanauxAccompagnementChart from '../components/CanauxAccompagnementChart';
+import TranchesAgeChart from '../components/TranchesAgeChart';
 import { Link } from 'react-router-dom';
 
-const CanauxAccompagnementPage = () => {
+const TranchesAgePage = () => {
   return (
     <div className="container mt-4">
       <Link to="/collection2" className="btn btn-outline-primary mb-3">← Retour</Link>
-      <CanauxAccompagnementChart />
+      <TranchesAgeChart />
     </div>
   );
 };
 
-export default CanauxAccompagnementPage;
+export default TranchesAgePage;

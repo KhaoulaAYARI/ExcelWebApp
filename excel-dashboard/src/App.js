@@ -19,6 +19,12 @@ import StatisticsDataTable from './components/StatisticsDataTable';
 import StatisticsExcelUpload from './components/StatisticsExcelUpload';
 import NbAccompagnementPage from './pages/NbAccompagnementPage'; 
 import CanauxAccompagnementPage from './pages/CanauxAccompagnementPage';
+import DureeAccompagnementPage from './pages/DureeAccompagnementPage';
+import TranchesAgePage from './pages/TranchesAgePage';
+import StatutUsagersPage from './pages/StatutUsagersPage';
+
+
+
 
 function HomePage() {
   return (
@@ -103,6 +109,11 @@ function App() {
         <Route path="/modifier-collection1/:id" element={<EditDataForm />} />
         <Route path="/collection2/graphique" element={<NbAccompagnementPage />} />
         <Route path="/collection2/graphiqueCanaux" element={<CanauxAccompagnementPage />} />
+        <Route path="/collection2/graphiqueDurees" element={<DureeAccompagnementPage />} />
+        <Route path="/collection2/graphiqueTranchesAge" element={<TranchesAgePage />} />
+        <Route path="/collection2/graphiqueStatutUsagers" element={<StatutUsagersPage />} />
+
+
 
         
 
