@@ -22,6 +22,8 @@ import CanauxAccompagnementPage from './pages/CanauxAccompagnementPage';
 import DureeAccompagnementPage from './pages/DureeAccompagnementPage';
 import TranchesAgePage from './pages/TranchesAgePage';
 import StatutUsagersPage from './pages/StatutUsagersPage';
+import DashboardGraphique from './pages/DashboardGraphique';
+
 
 
 
@@ -112,6 +114,8 @@ function App() {
         <Route path="/collection2/graphiqueDurees" element={<DureeAccompagnementPage />} />
         <Route path="/collection2/graphiqueTranchesAge" element={<TranchesAgePage />} />
         <Route path="/collection2/graphiqueStatutUsagers" element={<StatutUsagersPage />} />
+        <Route path="/collection2/DashboardGraphique" element={<DashboardGraphique />} />
+
 
 
 

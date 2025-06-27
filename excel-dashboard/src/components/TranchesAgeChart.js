@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Bar } from 'react-chartjs-2';
+// import { Bar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const TranchesAgeChart = () => {
@@ -46,7 +47,7 @@ const TranchesAgeChart = () => {
   return (
     <div>
       <h3>👥 Répartition des usagers par tranche d’âge</h3>
-      <Bar data={chartData} />
+      <Pie  data={chartData} />
     </div>
   );
 };

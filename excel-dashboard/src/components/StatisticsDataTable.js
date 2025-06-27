@@ -285,44 +285,13 @@ function StatisticsDataTable({ refresh }) {
           </p>
 
           {/* Les boutons des grapgiques */}
-          <div>
-            <button onClick={() => navigate('/collection2/graphique')} className="btn btn-info btn-sm">
-              Voir Nombre d’accompagnements/mois 
-            </button>
-          </div>
-          <div>
-            <button
-            onClick={() => navigate('/collection2/graphiqueCanaux')}
-            className="btn btn-warning btn-sm"
-             >
-            Voir Canaux d’accompagnement 
-            </button>
-          </div>
-          <div>
+          
           <button
-            onClick={() => navigate('/collection2/graphiqueDurees')}
-            className="btn btn-primary btn-sm"
+            onClick={() => navigate('/collection2/DashboardGraphique')}
+              className="btn btn-primary btn-lg w-100 my-3"
           >
-            Voir Durée des accompagnements
+            Voir les graphiques
           </button>
-          </div>
-          <div>
-            <button
-              onClick={() => navigate('/collection2/graphiqueTranchesAge')}
-              className="btn btn-dark btn-sm"
-            >
-              Voir Tranches d’âge
-            </button>
-          </div>
-          <div>
-            <button
-                onClick={() => navigate('/collection2/graphiqueStatutUsagers')}
-                className="btn btn-info btn-sm"
-              >
-                Voir Statut des usagers 
-              </button>
-
-          </div>
           <br></br>
 
         <div className="table-responsive" style={{ maxHeight: '600px', overflow: 'auto' }}>
